@@ -4,6 +4,10 @@ import streamlit as st
 filepath = "todos.txt"
 todos = functions.get_todos(filepath)
 
+def add_button_clicked():
+    print("I'm clicked.")
+    # st.error("To-do is added!")
+
 def check_todo_input():
     todo = st.session_state["new_todo"] + "\n"
     
@@ -33,8 +37,16 @@ for index, todo in enumerate(todos):
         del st.session_state[todo]
         st.rerun()
 
-st.text_input(label="Enter a todo:", placeholder="Add new to-do...",
-              on_change=check_todo_input, key='new_todo')
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.text_input(label="Enter a todo:", placeholder="Add new to-do...",
+                on_change=check_todo_input, key='new_todo')
+with col2:
+    st.date_input(label="Date", value="today", format="DD/MM/YYYY", key="complete_date")
+with col3:
+    st.time_input(label="Time", value="now", step=300, key="complete_time")
+st.button(label="Add", on_click=add_button_clicked, key="add_button")
 
 # For debugging
-# st.session_state
+st.session_state
